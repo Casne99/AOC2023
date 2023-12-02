@@ -48,14 +48,14 @@ class Game {
         }
     }
 
-    private int getMin(final String color) {
+    private int getMax(final String color) {
         extractions.collect(extraction ->
             extraction.getValue(color) as Integer
         ).max()
     }
 
     int computePower() {
-        def mins = ['red', 'green', 'blue'].collect( it -> getMin(it))
+        def mins = ['red', 'green', 'blue'].collect( it -> getMax(it))
         mins.inject(1) { product, next ->
             product * next
         }

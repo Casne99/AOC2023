@@ -9,7 +9,7 @@ def given = [
 new File('input.txt').readLines()
         .each { it ->
             Integer gameId = it.split(':')[0].split(' ')[1] as Integer
-            def gameData = it.split(':')[1]?.trim()
+            def gameData = it.split(':')[1].trim()
             def extractions = []
             gameData.split(';').each { extraction ->
                 extractions.add(new Extraction(extraction as String))

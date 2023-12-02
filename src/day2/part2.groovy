@@ -55,8 +55,8 @@ class Game {
     }
 
     int computePower() {
-        def mins = ['red', 'green', 'blue'].collect( it -> getMax(it))
-        mins.inject(1) { product, next ->
+        def maxs = ['red', 'green', 'blue'].collect( it -> getMax(it))
+        maxs.inject(1) { product, next ->
             product * next
         }
     }

@@ -38,7 +38,6 @@ class Extraction {
             Integer alreadyPresent = occurrences[key]
 
             occurrences[key] = alreadyPresent + toAdd
-
         }
     }
 

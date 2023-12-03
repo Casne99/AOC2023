@@ -28,7 +28,7 @@ println ans
 
 static String computeAdjacency(final List<String> strings, final int start, final int end) {
     return strings.collect { string ->
-        string == '' ? '' : string.substring(start, end)
+        string.isEmpty() ? '' : string.substring(start, end)
     }.join()
 }
 

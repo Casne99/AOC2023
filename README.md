@@ -5,4 +5,5 @@ My solutions for [Advent of Code 2023](https://adventofcode.com/2023) as long as
   - [Day3](https://adventofcode.com/2023/day/3) [(Solution)](https://github.com/Casne99/AOC2023/tree/main/src/day3)
   - [Day4](https://adventofcode.com/2023/day/4) [(Solution)](https://github.com/Casne99/AOC2023/tree/main/src/day4)
   - [Day5](https://adventofcode.com/2023/day/5) [(Solution)](https://github.com/Casne99/AOC2023/tree/main/src/day5)
+  - [Day6](https://adventofcode.com/2023/day/6) [(Solution)](https://github.com/Casne99/AOC2023/tree/main/src/day6)
 

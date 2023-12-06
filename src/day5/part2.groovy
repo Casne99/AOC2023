@@ -1,14 +1,14 @@
 List<String> fileInput = new File('input.txt').readLines()
-def seeds = fileInput[0].findAll('\\d+').collect{ it -> it as long}
-List<List<Mapping>> conversionSteps = []
-List<Mapping> conversionStep = null
+List<Long> ranges = fileInput[0].findAll('\\d+').collect { it -> it as long }
+List<Set<Mapping>> conversionSteps = []
+Set<Mapping> conversionStep = null
+long ans = 0
 
-println(seeds)
 
 for (int i = 2; i < fileInput.size(); i++) {
     String currentLine = fileInput[i]
     if (fileInput[i].endsWith('map:'))
-        conversionStep = new ArrayList<>()
+        conversionStep = new HashSet<>()
     else if (!currentLine.isBlank()) {
         conversionStep.add(new Mapping(currentLine.trim()))
         if (i == fileInput.size() - 1)
@@ -18,9 +18,25 @@ for (int i = 2; i < fileInput.size(); i++) {
 }
 
 Converter converter = new Converter(conversionSteps)
-long ans = seeds.collect { seed -> converter.convert(seed) }.min()
-println(ans)
+ans = converter.convert(ranges[0])
+Set<Long> toCheckLater = new HashSet<>()
+long prev = 0
 
+println(ranges.size())
+for (long i = 0; i < ranges.size() - 1; i += 2) {
+    for (long j = ranges[i]; j < ranges[i] + ranges[i + 1]; j = Math.min(j + 3000, ranges[i] + ranges[i + 1])) {
+        ans = Math.min(ans, converter.convert(j))
+        if (ans != prev){
+            for (long t = j; t > j - 3000 && t > 0; t--) {
+                toCheckLater.add(t)
+            }
+        }
+        prev = ans
+    }
+}
+
+ans = Math.min(ans, toCheckLater.collect( it -> converter.convert(it)).min())
+println(ans)
 
 class Mapping {
 
@@ -46,6 +62,11 @@ class Mapping {
     }
 
     @Override
+    int hashCode() {
+        return Objects.hash(from, to, values)
+    }
+
+    @Override
     String toString() {
         return "[${from} - ${to} - ${values}]"
     }
@@ -53,9 +74,9 @@ class Mapping {
 
 class Converter {
 
-    private final List<List<Mapping>> conversionSteps = [[]]
+    private final List<Set<Mapping>> conversionSteps = []
 
-    Converter(final List<List<Mapping>> conversionSteps) {
+    Converter(final List<Set<Mapping>> conversionSteps) {
         conversionSteps.each { conversionStep ->
             this.conversionSteps.add(conversionStep)
         }
@@ -63,9 +84,9 @@ class Converter {
 
     long convert(final long input) {
         long result = input
-        Iterator<List<Mapping>> iterator = conversionSteps.iterator()
+        Iterator<Set<Mapping>> iterator = conversionSteps.iterator()
         while (iterator.hasNext()) {
-            List<Mapping> conversionStep = iterator.next()
+            Set<Mapping> conversionStep = iterator.next()
             Optional<Mapping> mappingOpt = Optional.ofNullable(conversionStep.find { mapping ->
                 mapping.containsKey(result)
             })

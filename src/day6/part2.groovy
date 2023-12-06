@@ -1,33 +1,20 @@
+import groovyjarjarantlr4.v4.runtime.misc.Tuple2
+
 def input = new File('input.txt').readLines().collect { line ->
     line.split(':\\s+')[1].trim().findAll('\\d+').join()
 }
 
-long ans = waysToWin(new Race(input[0] as long, input[1] as long))
+long ans = waysToWin(new Tuple2<Long, Long>(input[0] as long, input[1] as long))
 println(ans)
 
-class Race {
+static int waysToWin(final Tuple2<Long, Long> race) {
 
-    final long time
+    int ans = 0
+    long time = race.getItem1()
+    long distance = race.getItem2()
 
-    final long recordDistance
-
-    Race(final long time, final long recordDistance) {
-        this.time = time
-        this.recordDistance = recordDistance
-    }
-
-    @Override
-    String toString() {
-        return "Time: ${time}\nDistance: ${recordDistance}\n"
-    }
-}
-
-static long waysToWin(final Race race) {
-
-    long ans = 0
-
-    for (long i = 1; i < race.time; i++) {
-        if (i * (race.time - i) > race.recordDistance)
+    for (int i = 1; i < time; i++) {
+        if (i * (time - i) > distance)
             ans++
     }
     return ans

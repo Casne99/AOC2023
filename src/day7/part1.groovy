@@ -130,7 +130,7 @@ class CardStack implements Comparable<CardStack> {
     public final String cards
     private Hand hand
 
-    static final List<String> order = [
+    private static final List<String> order = [
             'A', 'K', 'Q', 'J', 'T', '9', '8', '7', '6', '5', '4', '3', '2'
     ]
 

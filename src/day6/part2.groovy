@@ -4,7 +4,7 @@ def input = new File('input.txt').readLines().collect { line ->
     line.split(':\\s+')[1].trim().findAll('\\d+').join()
 }
 
-long ans = waysToWin(new Tuple2<Long, Long>(input[0] as long, input[1] as long))
+int ans = waysToWin(new Tuple2<Long, Long>(input[0] as long, input[1] as long))
 println(ans)
 
 static int waysToWin(final Tuple2<Long, Long> race) {

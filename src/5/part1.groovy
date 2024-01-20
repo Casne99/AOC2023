@@ -1,5 +1,5 @@
 List<String> fileInput = new File('input.txt').readLines()
-def seeds = fileInput[0].findAll('\\d+').collect{ it -> it as long}
+def seeds = fileInput[0].findAll('\\d+').collect { it -> it as long }
 List<List<Mapping>> conversionSteps = []
 List<Mapping> conversionStep = null
 
@@ -53,7 +53,7 @@ class Mapping {
 
 class Converter {
 
-    private final List<List<Mapping>> conversionSteps = [[]]
+    private final List<List<Mapping>> conversionSteps = []
 
     Converter(final List<List<Mapping>> conversionSteps) {
         conversionSteps.each { conversionStep ->
@@ -65,11 +65,9 @@ class Converter {
         long result = input
         Iterator<List<Mapping>> iterator = conversionSteps.iterator()
         while (iterator.hasNext()) {
-            List<Mapping> conversionStep = iterator.next()
-            Optional<Mapping> mappingOpt = Optional.ofNullable(conversionStep.find { mapping ->
+            result = iterator.next().find { mapping ->
                 mapping.containsKey(result)
-            })
-            result = mappingOpt.isPresent() ? mappingOpt.get().mappedTo(result) : result
+            }?.mappedTo(result) ?: result
         }
         return result
     }

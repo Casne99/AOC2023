@@ -63,13 +63,16 @@ class Finder {
     }
 
     int search() {
-        int ans = 0
+        int ans = 1
         def prevs = [new Coordinate(sPosition.getx(), sPosition.gety()),
                      new Coordinate(sPosition.getx(), sPosition.gety())]
 
-        for (int i = 0; i < 4; i++) {
-            println(gameMap.get(cursors[0]))
+        while (cursors[0] != cursors[1]) {
+            ans++
             updateCursor(cursors[0], prevs[0], gameMap.get(cursors[0]))
+            //println(prevs[0])
+            //println(prevs[1])
+            updateCursor(cursors[1], prevs[1], gameMap.get(cursors[1]))
         }
         return ans
     }

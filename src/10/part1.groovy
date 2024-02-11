@@ -68,11 +68,9 @@ class Finder {
                      new Coordinate(sPosition.getx(), sPosition.gety())]
 
         while (cursors[0] != cursors[1]) {
-            ans++
             updateCursor(cursors[0], prevs[0], gameMap.get(cursors[0]))
-            //println(prevs[0])
-            //println(prevs[1])
             updateCursor(cursors[1], prevs[1], gameMap.get(cursors[1]))
+            ans++
         }
         return ans
     }
@@ -177,10 +175,5 @@ class Coordinate {
     @Override
     int hashCode() {
         x + y
-    }
-
-    @Override
-    String toString() {
-        return x + " " + y
     }
 }

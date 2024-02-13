@@ -1,17 +1,8 @@
-import java.util.regex.Pattern
 import java.util.regex.Matcher
+import java.util.regex.Pattern
 
-def substitutes = [
-        'one'  : '1e',
-        'two'  : '2o',
-        'three': '3e',
-        'four' : '4r',
-        'five' : '5e',
-        'six'  : '6',
-        'seven': '7n',
-        'eight': '8t',
-        'nine' : '9e',
-]
+String pattern = 'one|two|three|four|five|six|seven|eight|nine'
+
 
 def ans = new File('input.txt').readLines()
         .collect { it ->

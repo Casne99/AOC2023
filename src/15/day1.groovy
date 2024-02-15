@@ -1,8 +1,11 @@
-int ans = new File('input.txt').readLines()
-        .collect { line ->
-            line.split(',')
-                    .collect { instruction -> hash(instruction) }.sum()
-        }[0] as int
+def input = new File('input.txt').readLines()
+int ans = 0
+
+for (final String line : input) {
+    ans += line.split(',').collect { it ->
+        hash(it)
+    }.sum()
+}
 
 println(ans)
 

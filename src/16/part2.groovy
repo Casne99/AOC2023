@@ -1,8 +1,9 @@
 import groovyjarjarantlr4.v4.runtime.misc.NotNull
 import groovyjarjarantlr4.v4.runtime.misc.Tuple2
 
-List<Memo> startingPoints = getStartingPoints(gameMap())
-int ans = startingPoints.collect { it -> new Maze(gameMap()).energizeFrom(it) }.max()
+def gameMap = gameMap()
+List<Memo> startingPoints = getStartingPoints(gameMap)
+int ans = startingPoints.collect { it -> new Maze(gameMap).energizeFrom(it) }.max()
 print(ans)
 
 static Map<Coordinate, String> gameMap() {
@@ -44,13 +45,13 @@ class Maze {
 
     private Set<Memo> alreadyStartedFrom = [] as Set<Memo>
 
-    private Set<Coordinate> energizedMirrors = [] as Set<Coordinate>
+    private Set<Coordinate> energizedPositions = [] as Set<Coordinate>
 
     private final Map<Coordinate, String> mirrorPositions = [:]
 
 
     Maze(final Map<Coordinate, String> gameMap) {
-        this.gameMap = gameMap.clone() as Map<Coordinate, String>
+        this.gameMap = gameMap
         gameMap.entrySet().each {
             def val = it.getValue()
             if (val in mirrors)
@@ -87,16 +88,16 @@ class Maze {
         def str = gameMap.get(start)
         def currCoordinate = start
         if (str in mirrors) {
-            energizedMirrors.add(currCoordinate)
+            energizedPositions.add(currCoordinate)
             return Mirror.make(str, currCoordinate).reflect(Direction.opposite(direction))
         }
         while ((!(gameMap[currCoordinate] in mirrors) && gameMap[currCoordinate] != null)) {
             if (gameMap[currCoordinate] == '.')
-                gameMap[currCoordinate] = '#'
+                energizedPositions.add(currCoordinate)
             currCoordinate = updateCurrCoordinate(currCoordinate, direction)
         }
         if (gameMap[currCoordinate] != null) {
-            energizedMirrors.add(currCoordinate)
+            energizedPositions.add(currCoordinate)
             return Mirror.make(gameMap.get(currCoordinate), currCoordinate).reflect(Direction.opposite(direction))
         }
         return []
@@ -128,7 +129,7 @@ class Maze {
     }
 
     int countEnergizedCells() {
-        return gameMap.values().count { it == '#' } + energizedMirrors.size()
+        return energizedPositions.size()
     }
 
 
@@ -136,17 +137,6 @@ class Maze {
         Memo startingPoint = startingPoints.first()
         startingPoints.remove(startingPoint)
         return startingPoint
-    }
-
-
-    static String p(Map<Coordinate, String> map) {
-        String s = ''
-        for (int y = map.keySet().collect { it -> it.gety() }.max(); y > -1; y--) {
-            for (int x = 0; x < map.keySet().collect { it -> it.getx() }.max() + 1; x++)
-                s += map.get(Coordinate.make(x, y))
-            s += '\n'
-        }
-        s
     }
 }
 

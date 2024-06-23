@@ -1,45 +1,22 @@
-import java.util.regex.Matcher
-import java.util.regex.Pattern
-
-String pattern = 'one|two|three|four|five|six|seven|eight|nine'
-
+String pattern = '(?=(one|two|three|four|five|six|seven|eight|nine|\\d))'
+def substitutions = [
+        'one'  : 1,
+        'two'  : 2,
+        'three': 3,
+        'four' : 4,
+        'five' : 5,
+        'six'  : 6,
+        'seven': 7,
+        'eight': 8,
+        'nine' : 9
+]
 
 def ans = new File('input.txt').readLines()
-        .collect { it ->
-            RecursiveReplacer replacer = new RecursiveReplacer(substitutes)
-            String filtered = replacer.replace(it).replaceAll('[^0-9]', '')
-            (filtered[0] + filtered[-1]) as Integer
+        .collect { line ->
+            (line =~ pattern)[[0, -1]].collect { match ->
+                String captured = (match as List)[1]
+                substitutions[captured] ?: captured
+            }.join() as int
         }.sum()
 
 println "Answer is ${ans}"
-
-
-class RecursiveReplacer {
-
-    private final Map<String, String> substitutions
-
-    private final Pattern pattern
-
-
-    RecursiveReplacer(final Map substitutions) {
-        this.substitutions = substitutions
-        pattern = Pattern.compile(substitutions.keySet().join('|'))
-    }
-
-    String replace(final String input) {
-
-        Matcher matcher = pattern.matcher(input)
-
-        if (matcher.find()) {
-
-            int startIndex = matcher.start()
-            int endIndex = matcher.end()
-
-            String matchedSubstring = input.substring(startIndex, endIndex)
-            return replace(input.replaceFirst(matchedSubstring,
-                    substitutions[matchedSubstring]))
-        }
-        return input // Base case!
-    }
-}
-
